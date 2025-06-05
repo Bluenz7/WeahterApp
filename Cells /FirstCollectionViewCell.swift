@@ -5,6 +5,7 @@
 //  Created by Владислав Скриганюк on 20.05.2025.
 //
 
+import Kingfisher
 import Foundation
 import UIKit
 
@@ -20,19 +21,15 @@ class FirstCollectionViewCell: UICollectionViewCell {
         label.text = ""
         label.textColor = .white
         label.textAlignment = .center
-        label.font = UIFont.systemFont(ofSize: 18)
+        label.font = UIFont.systemFont(ofSize: 15)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
-    private let secondLabel: UILabel = {
-        let label = UILabel()
-        label.text = ""
-        label.textColor = .white
-        label.textAlignment = .center
-        label.font = UIFont.systemFont(ofSize: 18)
-        label.translatesAutoresizingMaskIntoConstraints = false
-        return label
+    private let imageURL: UIImageView = {
+        let image = UIImageView()
+        image.translatesAutoresizingMaskIntoConstraints = false
+        return image
     }()
     
     private let thirdLabel: UILabel = {
@@ -47,7 +44,7 @@ class FirstCollectionViewCell: UICollectionViewCell {
     //MARK: - Setup Cell.
     private func setupCell() {
         addSubview(firstLabel)
-        addSubview(secondLabel)
+        addSubview(imageURL)
         addSubview(thirdLabel)
         setConstraints()
         backgroundColor = UIColor(red: 35/255, green: 51/255, blue: 98/255, alpha: 15)
@@ -64,9 +61,9 @@ class FirstCollectionViewCell: UICollectionViewCell {
 }
 //MARK: - Setup Configuration.
 extension FirstCollectionViewCell {
-    func configuredCell(firstText: String?, secondText: Int?, thirdText: Int?) {
+    func configuredCell(firstText: String?, url: URL?, thirdText: Double?) {
         firstLabel.text = firstText
-        secondLabel.text = "\(secondText ?? 0)"
+        imageURL.kf.setImage(with: url)
         thirdLabel.text = "\(thirdText ?? 0)"
     }
 }
@@ -75,13 +72,16 @@ extension FirstCollectionViewCell {
     func setConstraints() {
         NSLayoutConstraint.activate([
             firstLabel.topAnchor.constraint(equalTo: topAnchor, constant: 5),
-            firstLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
+            firstLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
         
-            secondLabel.topAnchor.constraint(equalTo: firstLabel.topAnchor, constant: 30),
-            secondLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
+            imageURL.topAnchor.constraint(equalTo: firstLabel.bottomAnchor, constant: 10),
+            imageURL.centerXAnchor.constraint(equalTo: centerXAnchor),
+            imageURL.widthAnchor.constraint(equalToConstant: 25),
+            imageURL.heightAnchor.constraint(equalToConstant: 25),
             
-            thirdLabel.topAnchor.constraint(equalTo: secondLabel.topAnchor, constant: 30),
-            thirdLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20)
+            thirdLabel.topAnchor.constraint(equalTo: imageURL.bottomAnchor, constant: 10),
+            thirdLabel.centerXAnchor.constraint(equalTo: centerXAnchor)
         ])
     }
 }
+

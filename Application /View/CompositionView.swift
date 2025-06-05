@@ -93,6 +93,20 @@ class CompositionView: UIViewController {
         }
     }
     
+    func extractHour(from dateTimeString: String) -> String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd HH:mm"
+        formatter.locale = Locale(identifier: "en_US_POSIX")
+
+        if let date = formatter.date(from: dateTimeString) {
+            let hourFormatter = DateFormatter()
+            hourFormatter.dateFormat = "HH:mm"
+            return hourFormatter.string(from: date)
+        } else {
+            return ""
+        }
+    }
+
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
@@ -152,10 +166,10 @@ extension CompositionView {
     
     private func createFirstSection() -> NSCollectionLayoutSection {
         let item = NSCollectionLayoutItem(layoutSize: .init(widthDimension: .fractionalWidth(0.9), heightDimension: .fractionalHeight(1)))
-        let group = NSCollectionLayoutGroup.horizontal(layoutSize: .init(widthDimension: .fractionalWidth(2), heightDimension: .fractionalHeight(0.2)), subitems: [item])
+        let group = NSCollectionLayoutGroup.horizontal(layoutSize: .init(widthDimension: .absolute(65), heightDimension: .fractionalHeight(0.2)), subitems: [item])
         let section = createLayoutSection(group: group,
                                           behavior: .continuous,
-                                          interGroupSpacing: 5,
+                                          interGroupSpacing: -10,
                                           supplementaryItems: [supplementaryHeaderItem()])
         
         section.contentInsets = .init(top: 0, leading: 0, bottom: 25, trailing: 0)
@@ -192,18 +206,30 @@ extension CompositionView: UICollectionViewDataSource, UICollectionViewDelegate 
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 1
+        switch sections[section] {
+        case .firstCollection(let data):
+            return data.forecast.forecastday.first?.hour.count ?? 0
+
+        case .secondCollection(_):
+            return 1
+        }
     }
+
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         switch sections[indexPath.section] {
             
-        case .firstCollection(let first):
+        case .firstCollection(let data):
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: FirstCollectionViewCell.self), for: indexPath) as? FirstCollectionViewCell
             else {
                 return UICollectionViewCell()
             }
-            cell.configuredCell(firstText: first.location.region, secondText: Int(first.current.temp_c ?? 0), thirdText: Int(first.current.temp_c ?? 0))
+            let timeString = data.forecast.forecastday.first?.hour[indexPath.item].time ?? ""
+            let hourOnly = extractHour(from: timeString)
+            let iconPath = String(data.forecast.forecastday.first?.hour[indexPath.item].condition.icon ?? "")
+            let fullIconURL = URL(string: "http:" + iconPath)
+            
+            cell.configuredCell(firstText: hourOnly, url: fullIconURL, thirdText: Double(data.forecast.forecastday.first?.hour[indexPath.item].temp_c ?? 0))
             
             cell.layer.cornerRadius = 15
             cell.layer.masksToBounds = true

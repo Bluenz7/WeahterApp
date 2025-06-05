@@ -8,6 +8,7 @@ target 'WeatherApplication' do
   # Pods for WeatherApplication
 
    pod 'SnapKit'
+   pod 'Kingfisher'
 
   target 'WeatherApplicationTests' do
     inherit! :search_paths

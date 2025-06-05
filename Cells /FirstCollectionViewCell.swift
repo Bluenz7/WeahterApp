@@ -74,12 +74,12 @@ extension FirstCollectionViewCell {
             firstLabel.topAnchor.constraint(equalTo: topAnchor, constant: 5),
             firstLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
         
-            imageURL.topAnchor.constraint(equalTo: firstLabel.bottomAnchor, constant: 10),
+            imageURL.topAnchor.constraint(equalTo: firstLabel.bottomAnchor, constant: 5),
             imageURL.centerXAnchor.constraint(equalTo: centerXAnchor),
-            imageURL.widthAnchor.constraint(equalToConstant: 25),
-            imageURL.heightAnchor.constraint(equalToConstant: 25),
+            imageURL.widthAnchor.constraint(equalToConstant: 35),
+            imageURL.heightAnchor.constraint(equalToConstant: 35),
             
-            thirdLabel.topAnchor.constraint(equalTo: imageURL.bottomAnchor, constant: 10),
+            thirdLabel.topAnchor.constraint(equalTo: imageURL.bottomAnchor, constant: 5),
             thirdLabel.centerXAnchor.constraint(equalTo: centerXAnchor)
         ])
     }

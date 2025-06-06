@@ -7,10 +7,12 @@
 
 import Foundation
 import UIKit
+import Kingfisher
 
-class SecondCollectionViewCell: UICollectionViewCell {
+class SecondCollectionViewCell: UICollectionViewCell, SeparatorDisplayable {
     
-//MARK: - Private Properties.
+    
+    //MARK: - Private Properties.
     private let firstLabel: UILabel = {
         let label = UILabel()
         label.text = ""
@@ -21,7 +23,13 @@ class SecondCollectionViewCell: UICollectionViewCell {
         return label
     }()
     
-    private let secondLabel: UILabel = {
+    private let imageURL: UIImageView = {
+        let image = UIImageView()
+        image.translatesAutoresizingMaskIntoConstraints = false
+        return image
+    }()
+
+    private let minTempLabel: UILabel = {
         let label = UILabel()
         label.text = ""
         label.textColor = .white
@@ -31,7 +39,7 @@ class SecondCollectionViewCell: UICollectionViewCell {
         return label
     }()
     
-    private let thirdLabel: UILabel = {
+    private let maxTempLabel: UILabel = {
         let label = UILabel()
         label.text = ""
         label.textColor = .white
@@ -40,14 +48,27 @@ class SecondCollectionViewCell: UICollectionViewCell {
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
+    
+    private let separatorView: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 0.2)
+        view.layer.cornerRadius = 2
+        return view
+    }()
+    //MARK: - TemperatureGradintBar.
+    private let temperatureBar = TemperatureGradientBar()
     
    //MARK: - Setup Cell.
     private func setupCell() {
         addSubview(firstLabel)
-        addSubview(secondLabel)
-        addSubview(thirdLabel)
-        setConstraints()
+        addSubview(imageURL)
+        addSubview(minTempLabel)
+        addSubview(temperatureBar)
+        addSubview(maxTempLabel)
+        addSubview(separatorView)
         backgroundColor = UIColor(red: 35/255, green: 51/255, blue: 98/255, alpha: 15)
+        setConstraints()
     }
     
 //MARK: - Life Cycle.
@@ -59,30 +80,69 @@ class SecondCollectionViewCell: UICollectionViewCell {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+/// Update Temperature.
+    func updateTemperature(_ temperature: Double) {
+           temperatureBar.temperature = temperature
+       }
+/// Set Separator Hidden.
+    internal func setSeparatorHidden(_ hidden: Bool) {
+        separatorView.isHidden = hidden
+    }
+
+       override func prepareForReuse() {
+           super.prepareForReuse()
+           setSeparatorHidden(false)
+           updateTemperature(20)
+       }
 }
 
 //MARK: - Setup Configuration.
 extension SecondCollectionViewCell {
-    func configuredCell(firstText: String?, secondText: Int?, thirdText: Int?) {
+    func configuredCell(firstText: String?, image: URL?, minTemp: Double?, maxTemp: Double?) {
         firstLabel.text = firstText
-        secondLabel.text = "\(secondText ?? 0)"
-        thirdLabel.text = "\(thirdText ?? 0)"
+        imageURL.kf.setImage(with: image)
+        minTempLabel.text = "\(minTemp ?? 0)º"
+        maxTempLabel.text = "\(maxTemp ?? 0)º"
     }
 }
 
 //MARK: - Setup Constraints.
 extension SecondCollectionViewCell {
     func setConstraints() {
+        temperatureBar.translatesAutoresizingMaskIntoConstraints = false
+        
         NSLayoutConstraint.activate([
             firstLabel.topAnchor.constraint(equalTo: topAnchor, constant: 10),
             firstLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
             
-            secondLabel.topAnchor.constraint(equalTo: topAnchor, constant: 10),
-            secondLabel.leadingAnchor.constraint(equalTo: firstLabel.leadingAnchor, constant: 150),
+            imageURL.topAnchor.constraint(equalTo: topAnchor, constant: -2),
+            imageURL.leadingAnchor.constraint(equalTo: firstLabel.trailingAnchor, constant: 20),
+            imageURL.widthAnchor.constraint(equalToConstant: 45),
+            imageURL.heightAnchor.constraint(equalToConstant: 45),
             
-            thirdLabel.topAnchor.constraint(equalTo: topAnchor, constant: 10),
-            thirdLabel.leadingAnchor.constraint(equalTo: secondLabel.leadingAnchor, constant: 50)
+            minTempLabel.topAnchor.constraint(equalTo: topAnchor, constant: 10),
+            minTempLabel.leadingAnchor.constraint(equalTo: imageURL.trailingAnchor, constant: 15),
+            
+            temperatureBar.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 18),
+            temperatureBar.leadingAnchor.constraint(equalTo: minTempLabel.trailingAnchor, constant: 5),
+            temperatureBar.heightAnchor.constraint(equalToConstant: 8),
+            temperatureBar.widthAnchor.constraint(equalToConstant: 55),
+            
+            maxTempLabel.topAnchor.constraint(equalTo: topAnchor, constant: 10),
+            maxTempLabel.leadingAnchor.constraint(equalTo: temperatureBar.trailingAnchor, constant: 5),
+            
+            separatorView.widthAnchor.constraint(equalToConstant: 300),
+            separatorView.heightAnchor.constraint(equalToConstant: 1),
+            separatorView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+            separatorView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
+            separatorView.centerXAnchor.constraint(equalTo: centerXAnchor),
+            separatorView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: 0)
             
         ])
     }
 }
+
+protocol SeparatorDisplayable: AnyObject {
+    func setSeparatorHidden(_ hidden: Bool)
+}
+

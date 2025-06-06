@@ -25,7 +25,7 @@ class CompositionView: UIViewController {
         let label = UILabel()
         label.text = ""
         label.textColor = .white
-        label.font = UIFont(name: "AlNile", size: 120)
+        label.font = UIFont(name: "STIXTwoText", size: 100)
         label.translatesAutoresizingMaskIntoConstraints = false
         label.backgroundColor = .clear
         return label
@@ -100,8 +100,22 @@ class CompositionView: UIViewController {
 
         if let date = formatter.date(from: dateTimeString) {
             let hourFormatter = DateFormatter()
-            hourFormatter.dateFormat = "HH:mm"
+            hourFormatter.dateFormat = "HH"
             return hourFormatter.string(from: date)
+        } else {
+            return ""
+        }
+    }
+    
+    func extractDay(from dataTimeString: String) -> String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd HH:mm"
+        formatter.locale = Locale(identifier: "en_US_POSIX")
+        
+        if let date = formatter.date(from: dataTimeString) {
+            let dayFormatter = DateFormatter()
+            dayFormatter.dateFormat = "yyyy-MM-dd"
+            return dayFormatter.string(from: date)
         } else {
             return ""
         }
@@ -128,7 +142,7 @@ class CompositionView: UIViewController {
 extension CompositionView: WeahterPresenterProtocol {
     func updateTemperature(country: String, temperature: Double, condition: String) {
         firstLabel.text = country
-        secondLabel.text = "\(temperature)°"
+        secondLabel.text = "\(temperature)º"
         thirdLabel.text = condition
     }
 }
@@ -186,6 +200,7 @@ extension CompositionView {
         section.interGroupSpacing = 20
         
         section.contentInsets = .init(top: 0, leading: 0, bottom: 25, trailing: 0)
+
         return section
     }
     
@@ -193,7 +208,7 @@ extension CompositionView {
         let header = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: .init(widthDimension: .fractionalWidth(1), heightDimension: .estimated(30)), elementKind: UICollectionView.elementKindSectionHeader, alignment: .top)
         header.pinToVisibleBounds = true
         header.extendsBoundary = true
-        header.zIndex = 1
+//        header.zIndex = 1
         return header
     }
 }
@@ -210,8 +225,8 @@ extension CompositionView: UICollectionViewDataSource, UICollectionViewDelegate 
         case .firstCollection(let data):
             return data.forecast.forecastday.first?.hour.count ?? 0
 
-        case .secondCollection(_):
-            return 1
+        case .secondCollection(let data):
+            return data.forecast.forecastday.count
         }
     }
 
@@ -224,28 +239,37 @@ extension CompositionView: UICollectionViewDataSource, UICollectionViewDelegate 
             else {
                 return UICollectionViewCell()
             }
+            
             let timeString = data.forecast.forecastday.first?.hour[indexPath.item].time ?? ""
             let hourOnly = extractHour(from: timeString)
             let iconPath = String(data.forecast.forecastday.first?.hour[indexPath.item].condition.icon ?? "")
             let fullIconURL = URL(string: "http:" + iconPath)
             
             cell.configuredCell(firstText: hourOnly, url: fullIconURL, thirdText: Double(data.forecast.forecastday.first?.hour[indexPath.item].temp_c ?? 0))
-            
-            cell.layer.cornerRadius = 15
-            cell.layer.masksToBounds = true
-            cell.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
+//            cell.layer.cornerRadius = 15
+//            cell.layer.masksToBounds = true
+//            cell.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
             return cell
             
-        case .secondCollection(let second):
+        case .secondCollection(let data):
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: SecondCollectionViewCell.self), for: indexPath) as? SecondCollectionViewCell
             else {
                 return UICollectionViewCell()
             }
-            cell.configuredCell(firstText: second.location.region, secondText: Int(second.current.temp_c ?? 0), thirdText: Int(second.current.temp_c ?? 0))
-            cell.configuredCell(firstText: second.location.country, secondText: Int(second.current.temp_c ?? 0), thirdText: Int(second.current.temp_c ?? 0))
-            cell.layer.cornerRadius = 15
-            cell.layer.masksToBounds = true
-            cell.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
+            
+            let dayString = String(data.forecast.forecastday[indexPath.item].hour[indexPath.item].time ?? "")
+            let dayOnly = extractDay(from: dayString)
+            let iconPath = String(data.current.condition.icon ?? "")
+            let fullIconURL = URL(string: "http:" + iconPath)
+            cell.configuredCell(firstText: dayOnly, image: fullIconURL, minTemp: data.forecast.forecastday[indexPath.item].day.mintemp_c, maxTemp: data.forecast.forecastday[indexPath.item].day.maxtemp_c)
+            
+            let temperature = data.forecast.forecastday[indexPath.item].day.mintemp_c ?? 0
+            cell.updateTemperature(temperature)
+            let isLast = indexPath.item == data.forecast.forecastday.count - 1
+            (cell as? SeparatorDisplayable)?.setSeparatorHidden(isLast)
+//            cell.layer.cornerRadius = 15
+//            cell.layer.masksToBounds = true
+//            cell.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
             return cell
         }
     }
@@ -309,19 +333,17 @@ extension CompositionView {
         view.addSubview(firstLabel)
         view.addSubview(secondLabel)
         view.addSubview(thirdLabel)
-        //        title = "Weather Application"
     }
     //MARK: - Set Constraints.
     func setConstraints() {
         NSLayoutConstraint.activate([
-            
             firstLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: 100),
             firstLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             
-            secondLabel.topAnchor.constraint(equalTo: firstLabel.topAnchor, constant: 25),
+            secondLabel.topAnchor.constraint(equalTo: firstLabel.bottomAnchor, constant: 2),
             secondLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             
-            thirdLabel.topAnchor.constraint(equalTo: secondLabel.topAnchor, constant: 115),
+            thirdLabel.topAnchor.constraint(equalTo: secondLabel.bottomAnchor, constant: 3),
             thirdLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             
             collectionView.topAnchor.constraint(equalTo: view.topAnchor, constant: 350),

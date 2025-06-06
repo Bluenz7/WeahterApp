@@ -64,7 +64,7 @@ extension FirstCollectionViewCell {
     func configuredCell(firstText: String?, url: URL?, thirdText: Double?) {
         firstLabel.text = firstText
         imageURL.kf.setImage(with: url)
-        thirdLabel.text = "\(thirdText ?? 0)"
+        thirdLabel.text = "\(thirdText ?? 0)º"
     }
 }
 //MARK: - Setup Constraints.

@@ -29,6 +29,7 @@
 		D5C624E92DE5FB2900C787E6 /* RoundedBackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5C624E82DE5FB2900C787E6 /* RoundedBackgroundView.swift */; };
 		D5C624F22DEA119600C787E6 /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5C624F12DEA119600C787E6 /* LocationManager.swift */; };
 		D5C624F62DEF2B0100C787E6 /* CollectionCellItems.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5C624F52DEF2B0100C787E6 /* CollectionCellItems.swift */; };
+		D5C624F92DF34E7A00C787E6 /* TemperatureGradientBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5C624F82DF34E7A00C787E6 /* TemperatureGradientBar.swift */; };
 		FDA5830782E77E48F48F0387 /* Pods_WeatherApplication.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3AD74DB411949973572803FE /* Pods_WeatherApplication.framework */; };
 /* End PBXBuildFile section */
 
@@ -81,6 +82,7 @@
 		D5C624E82DE5FB2900C787E6 /* RoundedBackgroundView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedBackgroundView.swift; sourceTree = "<group>"; };
 		D5C624F12DEA119600C787E6 /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
 		D5C624F52DEF2B0100C787E6 /* CollectionCellItems.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionCellItems.swift; sourceTree = "<group>"; };
+		D5C624F82DF34E7A00C787E6 /* TemperatureGradientBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TemperatureGradientBar.swift; sourceTree = "<group>"; };
 		DF1280EFAF0988DEE283AF01 /* Pods_WeatherApplicationTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WeatherApplicationTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		EE7F2AEC3AA771482AB59960 /* Pods_WeatherApplication_WeatherApplicationUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WeatherApplication_WeatherApplicationUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -260,6 +262,7 @@
 			isa = PBXGroup;
 			children = (
 				D5C624E82DE5FB2900C787E6 /* RoundedBackgroundView.swift */,
+				D5C624F82DF34E7A00C787E6 /* TemperatureGradientBar.swift */,
 			);
 			path = DecorationView;
 			sourceTree = "<group>";
@@ -411,9 +414,13 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-WeatherApplication/Pods-WeatherApplication-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
+			inputPaths = (
+			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-WeatherApplication/Pods-WeatherApplication-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -428,9 +435,13 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-WeatherApplication-WeatherApplicationUITests/Pods-WeatherApplication-WeatherApplicationUITests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
+			inputPaths = (
+			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-WeatherApplication-WeatherApplicationUITests/Pods-WeatherApplication-WeatherApplicationUITests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -518,6 +529,7 @@
 				D5C624E62DE5217600C787E6 /* Service.swift in Sources */,
 				D595966A2DDCCD810036E271 /* SceneDelegate.swift in Sources */,
 				D59596762DDCCFB60036E271 /* CompositionView.swift in Sources */,
+				D5C624F92DF34E7A00C787E6 /* TemperatureGradientBar.swift in Sources */,
 				D5ACDEB72DE50E1100139BFE /* AnimatedWeather.swift in Sources */,
 				D59596862DDD0A4F0036E271 /* SecondCollectionViewCell.swift in Sources */,
 				D595967C2DDCD6290036E271 /* WeahterPresenter.swift in Sources */,

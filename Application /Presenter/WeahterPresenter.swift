@@ -26,12 +26,33 @@ class WeatherPresenter {
 //    func attachView(_ view: CompositionView) {
 //        self.view = view
 //    }
-
+    private func buildModel(by data: WeatherResponse) -> WheatherModel {
+        var model: WheatherModel = WheatherModel(hourSection: [])
+        data.forecast.forecastday.enumerated().forEach { index, day in
+            guard index <= 1 else { return }
+            day.hour.forEach { hour in
+                model.hourSection.append(
+                    HourInfo(
+                        time: hour.time,
+                        temp_c: hour.temp_c,
+                        condition: WeatherInfo(
+                            text: hour.condition.text,
+                            icon: hour.condition.icon
+                        )
+                    )
+                )
+            }
+        }
+        return model
+    }
+    
     func loadWeather() {
         service.fetchForecast { [weak self] result in
             DispatchQueue.main.async {
                 switch result {
                 case .success(let forecast):
+                    guard let self else { return }
+                    
                     print("✅ Forecast loaded:", forecast)
                     let forecastDays = forecast.forecast.forecastday
                 
@@ -54,8 +75,8 @@ class WeatherPresenter {
                     guard let country = forecast.location.region else { return }
                             
                     let nextDays = Array(forecastDays.dropFirst().prefix(3))
-                    self?.view?.setSections(param: [.firstCollection(forecast), .secondCollection(forecast)])
-                    self?.weatherPresenter?.updateTemperature(country: country, temperature: day, condition: condition)
+                    self.view?.setSections(param: [.firstCollection(self.buildModel(by: forecast)), .secondCollection(forecast)])
+                    self.weatherPresenter?.updateTemperature(country: country, temperature: day, condition: condition)
                 
                     
                 case .failure(let error):

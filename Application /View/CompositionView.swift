@@ -21,6 +21,10 @@ class CompositionView: UIViewController {
         return label
     }()
     
+//    private let anyLable = UILabel().then {
+//        then посторонняя библиотека, которая позволяет сразу приступить к настройке объекта после инициализации.
+//    }
+    
     private let secondLabel: UILabel = {
         let label = UILabel()
         label.text = ""
@@ -223,7 +227,11 @@ extension CompositionView: UICollectionViewDataSource, UICollectionViewDelegate 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         switch sections[section] {
         case .firstCollection(let data):
-            return data.forecast.forecastday.first?.hour.count ?? 0
+            /// После
+            return data.hourSection.count
+            /// До модели новой
+//        case .firstCollection(let data):
+//            return data.forecast.forecastday.first?.hour.count ?? 0
 
         case .secondCollection(let data):
             return data.forecast.forecastday.count
@@ -240,15 +248,21 @@ extension CompositionView: UICollectionViewDataSource, UICollectionViewDelegate 
                 return UICollectionViewCell()
             }
             
-            let timeString = data.forecast.forecastday.first?.hour[indexPath.item].time ?? ""
+            // После
+            let timeString = data.hourSection[indexPath.item].time ?? ""
             let hourOnly = extractHour(from: timeString)
-            let iconPath = String(data.forecast.forecastday.first?.hour[indexPath.item].condition.icon ?? "")
+            let iconPath = String(data.hourSection[indexPath.item].condition.icon ?? "")
             let fullIconURL = URL(string: "http:" + iconPath)
             
-            cell.configuredCell(firstText: hourOnly, url: fullIconURL, thirdText: Double(data.forecast.forecastday.first?.hour[indexPath.item].temp_c ?? 0))
-//            cell.layer.cornerRadius = 15
-//            cell.layer.masksToBounds = true
-//            cell.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
+            cell.configuredCell(firstText: hourOnly, url: fullIconURL, thirdText: Double(data.hourSection[indexPath.item].temp_c ?? 0))
+            // До
+//            let timeString = data.forecast.forecastday.first?.hour[indexPath.item].time ?? ""
+//            let hourOnly = extractHour(from: timeString)
+//            let iconPath = String(data.forecast.forecastday.first?.hour[indexPath.item].condition.icon ?? "")
+//            let fullIconURL = URL(string: "http:" + iconPath)
+//            
+//            cell.configuredCell(firstText: hourOnly, url: fullIconURL, thirdText: Double(data.forecast.forecastday.first?.hour[indexPath.item].temp_c ?? 0))
+
             return cell
             
         case .secondCollection(let data):
@@ -266,7 +280,7 @@ extension CompositionView: UICollectionViewDataSource, UICollectionViewDelegate 
             let temperature = data.forecast.forecastday[indexPath.item].day.mintemp_c ?? 0
             cell.updateTemperature(temperature)
             let isLast = indexPath.item == data.forecast.forecastday.count - 1
-            (cell as? SeparatorDisplayable)?.setSeparatorHidden(isLast)
+            (cell as SeparatorDisplayable).setSeparatorHidden(isLast)
 //            cell.layer.cornerRadius = 15
 //            cell.layer.masksToBounds = true
 //            cell.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]

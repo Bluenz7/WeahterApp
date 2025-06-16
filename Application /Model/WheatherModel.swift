@@ -9,7 +9,7 @@ import Foundation
 
 enum ListSection {
     
-    case firstCollection(WeatherResponse)
+    case firstCollection(WheatherModel)
     case secondCollection(WeatherResponse)
     
 
@@ -22,4 +22,18 @@ enum ListSection {
         }
     }
     
+}
+
+struct WheatherModel {
+    var hourSection: [HourInfo]
+}
+
+struct HourInfo: Codable, Hashable {
+    let time: String?
+    let temp_c: Double?
+    let condition: WeatherInfo
+}
+struct WeatherInfo: Codable, Hashable {
+    let text: String?
+    let icon: String?
 }

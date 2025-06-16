@@ -18,7 +18,7 @@ class FirstCollectionViewCell: UICollectionViewCell {
 //MARK: - Private Properties.
     private let firstLabel: UILabel = {
         let label = UILabel()
-        label.text = ""
+        label.text = NSLocalizedString("", comment: "Просто как пример поставлена данная система")
         label.textColor = .white
         label.textAlignment = .center
         label.font = UIFont.systemFont(ofSize: 15)

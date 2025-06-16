@@ -51,3 +51,5 @@ struct DayWeather: Codable, Hashable {
     let mintemp_c: Double?
     let condition: WeatherCondition
 }
+
+

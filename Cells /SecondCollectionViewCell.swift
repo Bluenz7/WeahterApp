@@ -11,9 +11,16 @@ import Kingfisher
 
 class SecondCollectionViewCell: UICollectionViewCell, SeparatorDisplayable {
     
+    //MARK: - Model.
+    struct Model {
+        var date: String?
+        var icon: URL?
+        var mintemp_c: Double?
+        var maxtemp_c: Double?
+    }
     
     //MARK: - Private Properties.
-    private let firstLabel: UILabel = {
+    private let timeLabel: UILabel = {
         let label = UILabel()
         label.text = ""
         label.textColor = .white
@@ -56,12 +63,13 @@ class SecondCollectionViewCell: UICollectionViewCell, SeparatorDisplayable {
         view.layer.cornerRadius = 2
         return view
     }()
+    
     //MARK: - TemperatureGradintBar.
     private let temperatureBar = TemperatureGradientBar()
     
    //MARK: - Setup Cell.
     private func setupCell() {
-        addSubview(firstLabel)
+        addSubview(timeLabel)
         addSubview(imageURL)
         addSubview(minTempLabel)
         addSubview(temperatureBar)
@@ -98,11 +106,12 @@ class SecondCollectionViewCell: UICollectionViewCell, SeparatorDisplayable {
 
 //MARK: - Setup Configuration.
 extension SecondCollectionViewCell {
-    func configuredCell(firstText: String?, image: URL?, minTemp: Double?, maxTemp: Double?) {
-        firstLabel.text = firstText
-        imageURL.kf.setImage(with: image)
-        minTempLabel.text = "\(minTemp ?? 0)º"
-        maxTempLabel.text = "\(maxTemp ?? 0)º"
+    func configuredCell(by model: Any) {
+        guard let model = model as? Model else { return }
+        timeLabel.text = model.date
+        imageURL.kf.setImage(with: model.icon)
+        minTempLabel.text = "\(Double(model.mintemp_c ?? 0))º"
+        maxTempLabel.text = "\(Double(model.maxtemp_c ?? 0))º"
     }
 }
 
@@ -112,11 +121,11 @@ extension SecondCollectionViewCell {
         temperatureBar.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
-            firstLabel.topAnchor.constraint(equalTo: topAnchor, constant: 10),
-            firstLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
+            timeLabel.topAnchor.constraint(equalTo: topAnchor, constant: 10),
+            timeLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
             
             imageURL.topAnchor.constraint(equalTo: topAnchor, constant: -2),
-            imageURL.leadingAnchor.constraint(equalTo: firstLabel.trailingAnchor, constant: 20),
+            imageURL.leadingAnchor.constraint(equalTo: timeLabel.trailingAnchor, constant: 20),
             imageURL.widthAnchor.constraint(equalToConstant: 45),
             imageURL.heightAnchor.constraint(equalToConstant: 45),
             

@@ -8,21 +8,40 @@
 import Foundation
 import UIKit
 
-struct CollectionCellItem: Hashable {
-    var uuid: String = UUID().uuidString
+
+struct CollectionModel {
+    var sections: [CollectionSection]
+}
+
+struct CollectionSection {
+//    var uuid: String = UUID().uuidString
+    var items: [CollectionItem]
+    var title: String
+//    public func hash(into hasher: inout Hasher) {
+//        hasher.combine(uuid)
+//    }
+}
+
+//extension CollectionCellSection: Equatable {
+//    static func == (lhs: CollectionCellSection, rhs: CollectionCellSection) -> Bool {
+//        lhs.uuid == rhs.uuid
+//    }
+//}
+struct CollectionItem {
+//    var uuid: String = UUID().uuidString
     var cellType: UICollectionViewCell.Type
     var cellModel: Any
     var id: String {
         String(describing: cellType.self)
     }
     
-    public func hash(into hasher: inout Hasher) {
-        hasher.combine(uuid)
-    }
+//    public func hash(into hasher: inout Hasher) {
+//        hasher.combine(uuid)
+//    }
 }
 
-extension CollectionCellItem: Equatable {
-    static func == (lhs: CollectionCellItem, rhs: CollectionCellItem) -> Bool {
-        lhs.uuid == rhs.uuid
-    }
-}
+//extension CollectionCellItem: Equatable {
+//    static func == (lhs: CollectionCellItem, rhs: CollectionCellItem) -> Bool {
+//        lhs.uuid == rhs.uuid
+//    }
+//}

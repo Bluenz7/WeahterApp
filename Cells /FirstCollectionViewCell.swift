@@ -11,12 +11,15 @@ import UIKit
 
 class FirstCollectionViewCell: UICollectionViewCell {
     
-    
-    struct model {
-        
+    //MARK: - Model.
+    struct Model {
+        var hour: String?
+        var iconURL: URL?
+        var temp: Double?
     }
-//MARK: - Private Properties.
-    private let firstLabel: UILabel = {
+    
+    //MARK: - Private Properties.
+    private let hourLabel: UILabel = {
         let label = UILabel()
         label.text = NSLocalizedString("", comment: "Просто как пример поставлена данная система")
         label.textColor = .white
@@ -32,7 +35,7 @@ class FirstCollectionViewCell: UICollectionViewCell {
         return image
     }()
     
-    private let thirdLabel: UILabel = {
+    private let tempLabel: UILabel = {
         let label = UILabel()
         label.text = ""
         label.textColor = .white
@@ -41,15 +44,17 @@ class FirstCollectionViewCell: UICollectionViewCell {
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
+    
     //MARK: - Setup Cell.
     private func setupCell() {
-        addSubview(firstLabel)
+        addSubview(hourLabel)
         addSubview(imageURL)
-        addSubview(thirdLabel)
+        addSubview(tempLabel)
         setConstraints()
         backgroundColor = UIColor(red: 35/255, green: 51/255, blue: 98/255, alpha: 15)
     }
     
+    //MARK: - Life Cycle.
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupCell()
@@ -59,28 +64,30 @@ class FirstCollectionViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
 }
+
 //MARK: - Setup Configuration.
 extension FirstCollectionViewCell {
-    func configuredCell(firstText: String?, url: URL?, thirdText: Double?) {
-        firstLabel.text = firstText
-        imageURL.kf.setImage(with: url)
-        thirdLabel.text = "\(thirdText ?? 0)º"
+    func configuredCell(by model: Any) {
+        guard let model = model as? Model else { return }
+        hourLabel.text = model.hour
+        imageURL.kf.setImage(with: model.iconURL)
+        tempLabel.text = "\((model.temp ?? 0))º"
     }
 }
 //MARK: - Setup Constraints.
 extension FirstCollectionViewCell {
     func setConstraints() {
         NSLayoutConstraint.activate([
-            firstLabel.topAnchor.constraint(equalTo: topAnchor, constant: 5),
-            firstLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
-        
-            imageURL.topAnchor.constraint(equalTo: firstLabel.bottomAnchor, constant: 5),
+            hourLabel.topAnchor.constraint(equalTo: topAnchor, constant: 5),
+            hourLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
+            
+            imageURL.topAnchor.constraint(equalTo: hourLabel.bottomAnchor, constant: 5),
             imageURL.centerXAnchor.constraint(equalTo: centerXAnchor),
             imageURL.widthAnchor.constraint(equalToConstant: 35),
             imageURL.heightAnchor.constraint(equalToConstant: 35),
             
-            thirdLabel.topAnchor.constraint(equalTo: imageURL.bottomAnchor, constant: 5),
-            thirdLabel.centerXAnchor.constraint(equalTo: centerXAnchor)
+            tempLabel.topAnchor.constraint(equalTo: imageURL.bottomAnchor, constant: 5),
+            tempLabel.centerXAnchor.constraint(equalTo: centerXAnchor)
         ])
     }
 }

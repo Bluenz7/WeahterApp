@@ -71,7 +71,7 @@ class CompositionView: UIViewController {
     private var weatherBackgroundView: AnimatedWeatherBackgroundView?
     
     // MARK: - Model.
-    private var sections: [ListSection] = []
+    private var collectionModel: CollectionModel = CollectionModel(sections: [])
     
     //MARK: - Setup Delegates.
     private func setDelegates() {
@@ -97,34 +97,6 @@ class CompositionView: UIViewController {
         }
     }
     
-    func extractHour(from dateTimeString: String) -> String {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy-MM-dd HH:mm"
-        formatter.locale = Locale(identifier: "en_US_POSIX")
-
-        if let date = formatter.date(from: dateTimeString) {
-            let hourFormatter = DateFormatter()
-            hourFormatter.dateFormat = "HH"
-            return hourFormatter.string(from: date)
-        } else {
-            return ""
-        }
-    }
-    
-    func extractDay(from dataTimeString: String) -> String {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy-MM-dd HH:mm"
-        formatter.locale = Locale(identifier: "en_US_POSIX")
-        
-        if let date = formatter.date(from: dataTimeString) {
-            let dayFormatter = DateFormatter()
-            dayFormatter.dateFormat = "yyyy-MM-dd"
-            return dayFormatter.string(from: date)
-        } else {
-            return ""
-        }
-    }
-
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
@@ -137,8 +109,8 @@ class CompositionView: UIViewController {
     }
     
     //MARK: - Setup Model.
-    func setSections(param: [ListSection]) {
-        sections = param
+    func setCollectionModel(param: CollectionModel) {
+        collectionModel = param
         collectionView.reloadData()
     }
 }
@@ -156,12 +128,13 @@ extension CompositionView {
     private func createLayout() -> UICollectionViewCompositionalLayout {
         UICollectionViewCompositionalLayout { [weak self] sectionIndex, _ in
             guard let self = self else { return nil }
-            let section = self.sections[sectionIndex]
-            switch section {
-            case .firstCollection(_):
+            switch sectionIndex {
+            case 0:
                 return self.createFirstSection()
-            case .secondCollection(_):
+            case 1:
                 return self.createSecondSection()
+            default:
+               return nil
             }
         }
     }
@@ -171,10 +144,11 @@ extension CompositionView {
 //MARK: - Extension setup Layout Section.
 extension CompositionView {
     
-    private func createLayoutSection(group: NSCollectionLayoutGroup,
-                                     behavior: UICollectionLayoutSectionOrthogonalScrollingBehavior,
-                                     interGroupSpacing: CGFloat,
-                                     supplementaryItems: [NSCollectionLayoutBoundarySupplementaryItem]) -> NSCollectionLayoutSection {
+    private func createLayoutSection(
+        group: NSCollectionLayoutGroup,
+        behavior: UICollectionLayoutSectionOrthogonalScrollingBehavior,
+        interGroupSpacing: CGFloat,
+        supplementaryItems: [NSCollectionLayoutBoundarySupplementaryItem]) -> NSCollectionLayoutSection {
         let section = NSCollectionLayoutSection(group: group)
         section.orthogonalScrollingBehavior = behavior
         section.interGroupSpacing = interGroupSpacing
@@ -189,7 +163,6 @@ extension CompositionView {
                                           behavior: .continuous,
                                           interGroupSpacing: -10,
                                           supplementaryItems: [supplementaryHeaderItem()])
-        
         section.contentInsets = .init(top: 0, leading: 0, bottom: 25, trailing: 0)
         return section
     }
@@ -202,7 +175,6 @@ extension CompositionView {
         section.orthogonalScrollingBehavior = .none
         section.boundarySupplementaryItems = [supplementaryHeaderItem()]
         section.interGroupSpacing = 20
-        
         section.contentInsets = .init(top: 0, leading: 0, bottom: 25, trailing: 0)
 
         return section
@@ -221,40 +193,43 @@ extension CompositionView {
 extension CompositionView: UICollectionViewDataSource, UICollectionViewDelegate  {
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        sections.count
+        collectionModel.sections.count
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        switch sections[section] {
-        case .firstCollection(let data):
-            /// После
-            return data.hourSection.count
-            /// До модели новой
-//        case .firstCollection(let data):
-//            return data.forecast.forecastday.first?.hour.count ?? 0
-
-        case .secondCollection(let data):
-            return data.forecast.forecastday.count
-        }
+        collectionModel.sections[section].items.count
     }
 
-    
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        switch sections[indexPath.section] {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: collectionModel.sections[indexPath.section].items[indexPath.item].id, for: indexPath)
+        
+        switch cell {
+        case let cell as FirstCollectionViewCell:
+            cell.configuredCell(by: collectionModel.sections[indexPath.section].items[indexPath.item].cellModel)
+            return cell
             
-        case .firstCollection(let data):
-            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: FirstCollectionViewCell.self), for: indexPath) as? FirstCollectionViewCell
-            else {
-                return UICollectionViewCell()
-            }
-            
-            // После
-            let timeString = data.hourSection[indexPath.item].time ?? ""
-            let hourOnly = extractHour(from: timeString)
-            let iconPath = String(data.hourSection[indexPath.item].condition.icon ?? "")
-            let fullIconURL = URL(string: "http:" + iconPath)
-            
-            cell.configuredCell(firstText: hourOnly, url: fullIconURL, thirdText: Double(data.hourSection[indexPath.item].temp_c ?? 0))
+        case let cell as SecondCollectionViewCell:
+            cell.configuredCell(by: collectionModel.sections[indexPath.section].items[indexPath.item].cellModel)
+            return cell
+        default:
+            return cell
+        }
+        
+//        switch collectionModel[indexPath.section] {
+//            
+//        case .firstCollection(let data):
+//            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: FirstCollectionViewCell.self), for: indexPath) as? FirstCollectionViewCell
+//            else {
+//                return UICollectionViewCell()
+//            }
+//            
+//            // После
+//            let timeString = data.hourSection[indexPath.item].time ?? ""
+//            let hourOnly = extractHour(from: timeString)
+//            let iconPath = String(data.hourSection[indexPath.item].condition.icon ?? "")
+//            let fullIconURL = URL(string: "http:" + iconPath)
+//            
+//            cell.configuredCell(firstText: hourOnly, url: fullIconURL, thirdText: Double(data.hourSection[indexPath.item].temp_c ?? 0))
             // До
 //            let timeString = data.forecast.forecastday.first?.hour[indexPath.item].time ?? ""
 //            let hourOnly = extractHour(from: timeString)
@@ -263,29 +238,27 @@ extension CompositionView: UICollectionViewDataSource, UICollectionViewDelegate 
 //            
 //            cell.configuredCell(firstText: hourOnly, url: fullIconURL, thirdText: Double(data.forecast.forecastday.first?.hour[indexPath.item].temp_c ?? 0))
 
-            return cell
-            
-        case .secondCollection(let data):
-            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: SecondCollectionViewCell.self), for: indexPath) as? SecondCollectionViewCell
-            else {
-                return UICollectionViewCell()
-            }
-            
-            let dayString = String(data.forecast.forecastday[indexPath.item].hour[indexPath.item].time ?? "")
-            let dayOnly = extractDay(from: dayString)
-            let iconPath = String(data.current.condition.icon ?? "")
-            let fullIconURL = URL(string: "http:" + iconPath)
-            cell.configuredCell(firstText: dayOnly, image: fullIconURL, minTemp: data.forecast.forecastday[indexPath.item].day.mintemp_c, maxTemp: data.forecast.forecastday[indexPath.item].day.maxtemp_c)
-            
-            let temperature = data.forecast.forecastday[indexPath.item].day.mintemp_c ?? 0
-            cell.updateTemperature(temperature)
-            let isLast = indexPath.item == data.forecast.forecastday.count - 1
-            (cell as SeparatorDisplayable).setSeparatorHidden(isLast)
-//            cell.layer.cornerRadius = 15
-//            cell.layer.masksToBounds = true
-//            cell.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
-            return cell
-        }
+//            return cell
+//            
+//        case .secondCollection(let data):
+//            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: SecondCollectionViewCell.self), for: indexPath) as? SecondCollectionViewCell
+//            else {
+//                return UICollectionViewCell()
+//            }
+//            
+//            let dayString = String(data.forecast.forecastday[indexPath.item].hour[indexPath.item].time ?? "")
+//            let dayOnly = extractDay(from: dayString)
+//            let iconPath = String(data.current.condition.icon ?? "")
+//            let fullIconURL = URL(string: "http:" + iconPath)
+//            cell.configuredCell(firstText: dayOnly, image: fullIconURL, minTemp: data.forecast.forecastday[indexPath.item].day.mintemp_c, maxTemp: data.forecast.forecastday[indexPath.item].day.maxtemp_c)
+//            
+//            let temperature = data.forecast.forecastday[indexPath.item].day.mintemp_c ?? 0
+//            cell.updateTemperature(temperature)
+//            let isLast = indexPath.item == data.forecast.forecastday.count - 1
+//            (cell as SeparatorDisplayable).setSeparatorHidden(isLast)
+//
+//            return cell
+//        }
     }
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
@@ -295,7 +268,7 @@ extension CompositionView: UICollectionViewDataSource, UICollectionViewDelegate 
             else {
                 return UICollectionReusableView()
             }
-            header.configureHeader(categoryName: sections[indexPath.section].title)
+            header.configureHeader(categoryName: collectionModel.sections[indexPath.section].title)
             header.backgroundColor = UIColor(red: 35/255, green: 51/255, blue: 98/255, alpha: 15)
             header.layer.cornerRadius = 15
             header.layer.masksToBounds = true

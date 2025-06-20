@@ -17,7 +17,6 @@
 		D59596722DDCCD860036E271 /* WeatherApplicationUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D595966F2DDCCD860036E271 /* WeatherApplicationUITests.swift */; };
 		D59596732DDCCD860036E271 /* WeatherApplicationUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D59596702DDCCD860036E271 /* WeatherApplicationUITestsLaunchTests.swift */; };
 		D59596762DDCCFB60036E271 /* CompositionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D59596752DDCCFB60036E271 /* CompositionView.swift */; };
-		D59596792DDCD60F0036E271 /* WheatherModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D59596782DDCD60F0036E271 /* WheatherModel.swift */; };
 		D595967C2DDCD6290036E271 /* WeahterPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D595967B2DDCD6290036E271 /* WeahterPresenter.swift */; };
 		D595967E2DDCD6970036E271 /* ListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = D595967D2DDCD6970036E271 /* ListItem.swift */; };
 		D59596842DDCDA1F0036E271 /* FirstCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D59596832DDCDA1F0036E271 /* FirstCollectionViewCell.swift */; };
@@ -70,7 +69,6 @@
 		D595966F2DDCCD860036E271 /* WeatherApplicationUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherApplicationUITests.swift; sourceTree = "<group>"; };
 		D59596702DDCCD860036E271 /* WeatherApplicationUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherApplicationUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		D59596752DDCCFB60036E271 /* CompositionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompositionView.swift; sourceTree = "<group>"; };
-		D59596782DDCD60F0036E271 /* WheatherModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WheatherModel.swift; sourceTree = "<group>"; };
 		D595967B2DDCD6290036E271 /* WeahterPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeahterPresenter.swift; sourceTree = "<group>"; };
 		D595967D2DDCD6970036E271 /* ListItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListItem.swift; sourceTree = "<group>"; };
 		D59596832DDCDA1F0036E271 /* FirstCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -203,7 +201,6 @@
 		D59596772DDCD6010036E271 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				D59596782DDCD60F0036E271 /* WheatherModel.swift */,
 				D595967D2DDCD6970036E271 /* ListItem.swift */,
 				D5C624F52DEF2B0100C787E6 /* CollectionCellItems.swift */,
 			);
@@ -533,7 +530,6 @@
 				D5ACDEB72DE50E1100139BFE /* AnimatedWeather.swift in Sources */,
 				D59596862DDD0A4F0036E271 /* SecondCollectionViewCell.swift in Sources */,
 				D595967C2DDCD6290036E271 /* WeahterPresenter.swift in Sources */,
-				D59596792DDCD60F0036E271 /* WheatherModel.swift in Sources */,
 				D5ACDEB22DE50ACC00139BFE /* .swift in Sources */,
 				D59596842DDCDA1F0036E271 /* FirstCollectionViewCell.swift in Sources */,
 				D59596882DDD181E0036E271 /* HeaderSupplementaryView.swift in Sources */,

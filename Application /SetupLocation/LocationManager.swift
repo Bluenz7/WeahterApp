@@ -13,27 +13,27 @@ class LocationManager: NSObject, CLLocationManagerDelegate {
     private let manager = CLLocationManager()
     var onLocationUpdate: ((CLLocationCoordinate2D) -> Void)?
     var onLocationDenied: (() -> Void)?
-
+    
     override init() {
         super.init()
         manager.delegate = self
     }
-
+    
     func requestLocation() {
         manager.requestWhenInUseAuthorization()
         manager.requestLocation()
     }
-
+    
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         if let location = locations.first {
             onLocationUpdate?(location.coordinate)
         }
     }
-
+    
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         onLocationDenied?()
     }
-
+    
     func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
         switch manager.authorizationStatus {
         case .authorizedWhenInUse, .authorizedAlways:

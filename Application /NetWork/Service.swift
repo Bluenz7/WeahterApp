@@ -15,7 +15,7 @@ class WeatherService {
         let longitude =  "30.5234"
         let urlString = "https://api.weatherapi.com/v1/forecast.json?key=\(apiKey)&q=\(latitude),\(longitude)&days=7&aqi=no&alerts=no"
         
-    
+        
         guard let url = URL(string: urlString) else { return }
         
         URLSession.shared.dataTask(with: url) { data, _, error in

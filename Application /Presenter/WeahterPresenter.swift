@@ -9,15 +9,16 @@ import Foundation
 
 protocol WeahterPresenterProtocol: AnyObject {
     func updateTemperature(country: String, temperature: Double, condition: String)
+    func setCollectionModel(param: CollectionModel)
 }
 
 class WeatherPresenter {
     weak var weatherPresenter: WeahterPresenterProtocol?
-    weak var view: CompositionView?
+    weak var view: CompositionViewController?
     let service = WeatherService()
     
     // MARK: - Inizialized WeatherVC
-    init(view: CompositionView, weatherPresenter: WeahterPresenterProtocol) {
+    init(view: CompositionViewController, weatherPresenter: WeahterPresenterProtocol) {
         self.view = view
         self.weatherPresenter = weatherPresenter
     }
@@ -49,20 +50,20 @@ class WeatherPresenter {
         
         data.forecast.forecastday.enumerated().forEach { index, numberOfDays in
             guard index <= 2 else { return }
-                let number = String(describing: numberOfDays.hour.forEach { hour in
-                    _ = String(hour.condition.icon ?? "")
-                })
-                forecastDaySection.items.append (
-                    CollectionItem(
-                        cellType: SecondCollectionViewCell.self,
-                        cellModel: SecondCollectionViewCell.Model(
-                            date: numberOfDays.date ?? "",
-                            icon: URL(string: "http:" + (number)),
-                            mintemp_c: numberOfDays.day.mintemp_c ?? 0,
-                            maxtemp_c: numberOfDays.day.maxtemp_c ?? 0
-                        )
+            let number = String(describing: numberOfDays.hour.forEach { hour in
+                _ = String(hour.condition.icon ?? "")
+            })
+            forecastDaySection.items.append (
+                CollectionItem(
+                    cellType: SecondCollectionViewCell.self,
+                    cellModel: SecondCollectionViewCell.Model(
+                        date: numberOfDays.date ?? "",
+                        icon: URL(string: "http:" + (number)),
+                        mintemp_c: numberOfDays.day.mintemp_c ?? 0,
+                        maxtemp_c: numberOfDays.day.maxtemp_c ?? 0
                     )
                 )
+            )
         }
         collectionModel.sections.append(forecastDaySection)
         
@@ -96,7 +97,7 @@ class WeatherPresenter {
             return ""
         }
     }
-
+    
     
     func loadWeather() {
         service.fetchForecast { [weak self] result in

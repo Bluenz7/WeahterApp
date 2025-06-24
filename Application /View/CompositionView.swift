@@ -8,10 +8,10 @@
 import Foundation
 import SnapKit
 
-class CompositionView: UIViewController {
+class CompositionView: UIView, WeahterPresenterProtocol {
     
     //MARK: - Private properties and methods.
-    private let firstLabel: UILabel = {
+    private let countryLabel: UILabel = {
         let label = UILabel()
         label.text = ""
         label.textColor = .white
@@ -21,11 +21,11 @@ class CompositionView: UIViewController {
         return label
     }()
     
-//    private let anyLable = UILabel().then {
-//        then посторонняя библиотека, которая позволяет сразу приступить к настройке объекта после инициализации.
-//    }
+    //    private let anyLable = UILabel().then {
+    //        then посторонняя библиотека, которая позволяет сразу приступить к настройке объекта после инициализации.
+    //    }
     
-    private let secondLabel: UILabel = {
+    private let temperatureLabel: UILabel = {
         let label = UILabel()
         label.text = ""
         label.textColor = .white
@@ -35,7 +35,7 @@ class CompositionView: UIViewController {
         return label
     }()
     
-    private let thirdLabel: UILabel = {
+    private let conditionLabel: UILabel = {
         let label = UILabel()
         label.text = ""
         label.textColor = UIColor.white.withAlphaComponent(0.8)
@@ -62,14 +62,6 @@ class CompositionView: UIViewController {
         return collectionView
     }()
     
-    // MARK: - Presenter.
-    private lazy var presenter: WeatherPresenter = {
-        return WeatherPresenter(view: self, weatherPresenter: self)
-    }()
-    
-    //MARK: - Calling BackgorundView.
-    private var weatherBackgroundView: AnimatedWeatherBackgroundView?
-    
     // MARK: - Model.
     private var collectionModel: CollectionModel = CollectionModel(sections: [])
     
@@ -80,12 +72,15 @@ class CompositionView: UIViewController {
     }
     
     //MARK: - Life Cycle.
-    override func viewDidLoad() {
-        super.viewDidLoad()
+    init() {
+        super.init(frame: .zero)
         setDelegates()
         setup()
-        presenter.loadWeather()
         fonts()
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
     func fonts() {
@@ -96,30 +91,19 @@ class CompositionView: UIViewController {
             }
         }
     }
-    
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        
-        if weatherBackgroundView == nil {
-            let bg = AnimatedWeatherBackgroundView(frame: view.bounds)
-            weatherBackgroundView = bg
-            view.addSubview(bg)
-            view.sendSubviewToBack(bg)
-        }
-    }
-    
+}
+
+
+extension CompositionView {
     //MARK: - Setup Model.
+    func updateTemperature(country: String, temperature: Double, condition: String) {
+        countryLabel.text = country
+        temperatureLabel.text = "\(temperature)º"
+        conditionLabel.text = condition
+    }
     func setCollectionModel(param: CollectionModel) {
         collectionModel = param
         collectionView.reloadData()
-    }
-}
-
-extension CompositionView: WeahterPresenterProtocol {
-    func updateTemperature(country: String, temperature: Double, condition: String) {
-        firstLabel.text = country
-        secondLabel.text = "\(temperature)º"
-        thirdLabel.text = condition
     }
 }
 
@@ -134,7 +118,7 @@ extension CompositionView {
             case 1:
                 return self.createSecondSection()
             default:
-               return nil
+                return nil
             }
         }
     }
@@ -149,12 +133,12 @@ extension CompositionView {
         behavior: UICollectionLayoutSectionOrthogonalScrollingBehavior,
         interGroupSpacing: CGFloat,
         supplementaryItems: [NSCollectionLayoutBoundarySupplementaryItem]) -> NSCollectionLayoutSection {
-        let section = NSCollectionLayoutSection(group: group)
-        section.orthogonalScrollingBehavior = behavior
-        section.interGroupSpacing = interGroupSpacing
-        section.boundarySupplementaryItems = supplementaryItems
-        return section
-    }
+            let section = NSCollectionLayoutSection(group: group)
+            section.orthogonalScrollingBehavior = behavior
+            section.interGroupSpacing = interGroupSpacing
+            section.boundarySupplementaryItems = supplementaryItems
+            return section
+        }
     
     private func createFirstSection() -> NSCollectionLayoutSection {
         let item = NSCollectionLayoutItem(layoutSize: .init(widthDimension: .fractionalWidth(0.9), heightDimension: .fractionalHeight(1)))
@@ -176,7 +160,7 @@ extension CompositionView {
         section.boundarySupplementaryItems = [supplementaryHeaderItem()]
         section.interGroupSpacing = 20
         section.contentInsets = .init(top: 0, leading: 0, bottom: 25, trailing: 0)
-
+        
         return section
     }
     
@@ -184,7 +168,7 @@ extension CompositionView {
         let header = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: .init(widthDimension: .fractionalWidth(1), heightDimension: .estimated(30)), elementKind: UICollectionView.elementKindSectionHeader, alignment: .top)
         header.pinToVisibleBounds = true
         header.extendsBoundary = true
-//        header.zIndex = 1
+        //        header.zIndex = 1
         return header
     }
 }
@@ -199,7 +183,7 @@ extension CompositionView: UICollectionViewDataSource, UICollectionViewDelegate 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         collectionModel.sections[section].items.count
     }
-
+    
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: collectionModel.sections[indexPath.section].items[indexPath.item].id, for: indexPath)
         
@@ -210,55 +194,57 @@ extension CompositionView: UICollectionViewDataSource, UICollectionViewDelegate 
             
         case let cell as SecondCollectionViewCell:
             cell.configuredCell(by: collectionModel.sections[indexPath.section].items[indexPath.item].cellModel)
+            //            let isLast = indexPath.item == data.forecast.forecastday.count - 1
+            //                        (cell as SeparatorDisplayable).setSeparatorHidden(isLast)
             return cell
         default:
             return cell
         }
         
-//        switch collectionModel[indexPath.section] {
-//            
-//        case .firstCollection(let data):
-//            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: FirstCollectionViewCell.self), for: indexPath) as? FirstCollectionViewCell
-//            else {
-//                return UICollectionViewCell()
-//            }
-//            
-//            // После
-//            let timeString = data.hourSection[indexPath.item].time ?? ""
-//            let hourOnly = extractHour(from: timeString)
-//            let iconPath = String(data.hourSection[indexPath.item].condition.icon ?? "")
-//            let fullIconURL = URL(string: "http:" + iconPath)
-//            
-//            cell.configuredCell(firstText: hourOnly, url: fullIconURL, thirdText: Double(data.hourSection[indexPath.item].temp_c ?? 0))
-            // До
-//            let timeString = data.forecast.forecastday.first?.hour[indexPath.item].time ?? ""
-//            let hourOnly = extractHour(from: timeString)
-//            let iconPath = String(data.forecast.forecastday.first?.hour[indexPath.item].condition.icon ?? "")
-//            let fullIconURL = URL(string: "http:" + iconPath)
-//            
-//            cell.configuredCell(firstText: hourOnly, url: fullIconURL, thirdText: Double(data.forecast.forecastday.first?.hour[indexPath.item].temp_c ?? 0))
-
-//            return cell
-//            
-//        case .secondCollection(let data):
-//            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: SecondCollectionViewCell.self), for: indexPath) as? SecondCollectionViewCell
-//            else {
-//                return UICollectionViewCell()
-//            }
-//            
-//            let dayString = String(data.forecast.forecastday[indexPath.item].hour[indexPath.item].time ?? "")
-//            let dayOnly = extractDay(from: dayString)
-//            let iconPath = String(data.current.condition.icon ?? "")
-//            let fullIconURL = URL(string: "http:" + iconPath)
-//            cell.configuredCell(firstText: dayOnly, image: fullIconURL, minTemp: data.forecast.forecastday[indexPath.item].day.mintemp_c, maxTemp: data.forecast.forecastday[indexPath.item].day.maxtemp_c)
-//            
-//            let temperature = data.forecast.forecastday[indexPath.item].day.mintemp_c ?? 0
-//            cell.updateTemperature(temperature)
-//            let isLast = indexPath.item == data.forecast.forecastday.count - 1
-//            (cell as SeparatorDisplayable).setSeparatorHidden(isLast)
-//
-//            return cell
-//        }
+        //        switch collectionModel[indexPath.section] {
+        //
+        //        case .firstCollection(let data):
+        //            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: FirstCollectionViewCell.self), for: indexPath) as? FirstCollectionViewCell
+        //            else {
+        //                return UICollectionViewCell()
+        //            }
+        //
+        //            // После
+        //            let timeString = data.hourSection[indexPath.item].time ?? ""
+        //            let hourOnly = extractHour(from: timeString)
+        //            let iconPath = String(data.hourSection[indexPath.item].condition.icon ?? "")
+        //            let fullIconURL = URL(string: "http:" + iconPath)
+        //
+        //            cell.configuredCell(firstText: hourOnly, url: fullIconURL, thirdText: Double(data.hourSection[indexPath.item].temp_c ?? 0))
+        // До
+        //            let timeString = data.forecast.forecastday.first?.hour[indexPath.item].time ?? ""
+        //            let hourOnly = extractHour(from: timeString)
+        //            let iconPath = String(data.forecast.forecastday.first?.hour[indexPath.item].condition.icon ?? "")
+        //            let fullIconURL = URL(string: "http:" + iconPath)
+        //
+        //            cell.configuredCell(firstText: hourOnly, url: fullIconURL, thirdText: Double(data.forecast.forecastday.first?.hour[indexPath.item].temp_c ?? 0))
+        
+        //            return cell
+        //
+        //        case .secondCollection(let data):
+        //            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: SecondCollectionViewCell.self), for: indexPath) as? SecondCollectionViewCell
+        //            else {
+        //                return UICollectionViewCell()
+        //            }
+        //
+        //            let dayString = String(data.forecast.forecastday[indexPath.item].hour[indexPath.item].time ?? "")
+        //            let dayOnly = extractDay(from: dayString)
+        //            let iconPath = String(data.current.condition.icon ?? "")
+        //            let fullIconURL = URL(string: "http:" + iconPath)
+        //            cell.configuredCell(firstText: dayOnly, image: fullIconURL, minTemp: data.forecast.forecastday[indexPath.item].day.mintemp_c, maxTemp: data.forecast.forecastday[indexPath.item].day.maxtemp_c)
+        //
+        //            let temperature = data.forecast.forecastday[indexPath.item].day.mintemp_c ?? 0
+        //            cell.updateTemperature(temperature)
+        //            let isLast = indexPath.item == data.forecast.forecastday.count - 1
+        //            (cell as SeparatorDisplayable).setSeparatorHidden(isLast)
+        //
+        //            return cell
+        //        }
     }
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
@@ -310,33 +296,33 @@ extension CompositionView {
     }
     
     func setupBackGround() {
-        let animatedBackground = AnimatedWeatherBackgroundView(frame: view.bounds)
-        view.addSubview(animatedBackground)
-        view.sendSubviewToBack(animatedBackground)  // фон находится сзади UICollectionView
+        let animatedBackground = AnimatedWeatherBackgroundView(frame: bounds)
+        addSubview(animatedBackground)
+        sendSubviewToBack(animatedBackground)  // фон находится сзади UICollectionView
     }
     
     func setupView() {
-        view.addSubview(collectionView)
-        view.addSubview(firstLabel)
-        view.addSubview(secondLabel)
-        view.addSubview(thirdLabel)
+        addSubview(collectionView)
+        addSubview(countryLabel)
+        addSubview(temperatureLabel)
+        addSubview(conditionLabel)
     }
     //MARK: - Set Constraints.
     func setConstraints() {
         NSLayoutConstraint.activate([
-            firstLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: 100),
-            firstLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            countryLabel.topAnchor.constraint(equalTo: topAnchor, constant: 100),
+            countryLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
             
-            secondLabel.topAnchor.constraint(equalTo: firstLabel.bottomAnchor, constant: 2),
-            secondLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            temperatureLabel.topAnchor.constraint(equalTo: countryLabel.bottomAnchor, constant: 2),
+            temperatureLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
             
-            thirdLabel.topAnchor.constraint(equalTo: secondLabel.bottomAnchor, constant: 3),
-            thirdLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            conditionLabel.topAnchor.constraint(equalTo: temperatureLabel.bottomAnchor, constant: 3),
+            conditionLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
             
-            collectionView.topAnchor.constraint(equalTo: view.topAnchor, constant: 350),
-            collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-            collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -1)
+            collectionView.topAnchor.constraint(equalTo: topAnchor, constant: 350),
+            collectionView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
+            collectionView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20),
+            collectionView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -1)
         ])
     }
 }

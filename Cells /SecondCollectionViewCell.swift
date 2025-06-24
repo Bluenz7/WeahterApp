@@ -35,7 +35,7 @@ class SecondCollectionViewCell: UICollectionViewCell, SeparatorDisplayable {
         image.translatesAutoresizingMaskIntoConstraints = false
         return image
     }()
-
+    
     private let minTempLabel: UILabel = {
         let label = UILabel()
         label.text = ""
@@ -67,7 +67,7 @@ class SecondCollectionViewCell: UICollectionViewCell, SeparatorDisplayable {
     //MARK: - TemperatureGradintBar.
     private let temperatureBar = TemperatureGradientBar()
     
-   //MARK: - Setup Cell.
+    //MARK: - Setup Cell.
     private func setupCell() {
         addSubview(timeLabel)
         addSubview(imageURL)
@@ -79,7 +79,7 @@ class SecondCollectionViewCell: UICollectionViewCell, SeparatorDisplayable {
         setConstraints()
     }
     
-//MARK: - Life Cycle.
+    //MARK: - Life Cycle.
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupCell()
@@ -88,20 +88,20 @@ class SecondCollectionViewCell: UICollectionViewCell, SeparatorDisplayable {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-/// Update Temperature.
+    /// Update Temperature.
     func updateTemperature(_ temperature: Double) {
-           temperatureBar.temperature = temperature
-       }
-/// Set Separator Hidden.
+        temperatureBar.temperature = temperature
+    }
+    /// Set Separator Hidden.
     internal func setSeparatorHidden(_ hidden: Bool) {
         separatorView.isHidden = hidden
     }
-
-       override func prepareForReuse() {
-           super.prepareForReuse()
-           setSeparatorHidden(false)
-           updateTemperature(20)
-       }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        setSeparatorHidden(false)
+        updateTemperature(20)
+    }
 }
 
 //MARK: - Setup Configuration.

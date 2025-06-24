@@ -14,12 +14,12 @@ struct CollectionModel {
 }
 
 struct CollectionSection {
-//    var uuid: String = UUID().uuidString
+    //    var uuid: String = UUID().uuidString
     var items: [CollectionItem]
     var title: String
-//    public func hash(into hasher: inout Hasher) {
-//        hasher.combine(uuid)
-//    }
+    //    public func hash(into hasher: inout Hasher) {
+    //        hasher.combine(uuid)
+    //    }
 }
 
 //extension CollectionCellSection: Equatable {
@@ -28,16 +28,16 @@ struct CollectionSection {
 //    }
 //}
 struct CollectionItem {
-//    var uuid: String = UUID().uuidString
+    //    var uuid: String = UUID().uuidString
     var cellType: UICollectionViewCell.Type
     var cellModel: Any
     var id: String {
         String(describing: cellType.self)
     }
     
-//    public func hash(into hasher: inout Hasher) {
-//        hasher.combine(uuid)
-//    }
+    //    public func hash(into hasher: inout Hasher) {
+    //        hasher.combine(uuid)
+    //    }
 }
 
 //extension CollectionCellItem: Equatable {

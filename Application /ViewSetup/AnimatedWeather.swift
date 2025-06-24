@@ -66,7 +66,7 @@ class AnimatedWeatherBackgroundView: UIView {
     
     // MARK: - Stars
     private func addStars() {
-        let emitter = CAEmitterLayer() 
+        let emitter = CAEmitterLayer()
         emitter.emitterPosition = CGPoint(x: bounds.width / 2.2, y: 150)
         emitter.emitterSize = CGSize(width: bounds.width, height: 1)
         emitter.emitterShape = .sphere
@@ -116,7 +116,7 @@ class AnimatedWeatherBackgroundView: UIView {
             )
         }
     }
-
+    
     // MARK: - Rain
     private func addRain() {
         let emitter = CAEmitterLayer()

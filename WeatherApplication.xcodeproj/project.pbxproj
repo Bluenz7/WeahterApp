@@ -32,6 +32,8 @@
 		D5C624F22DEA119600C787E6 /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5C624F12DEA119600C787E6 /* LocationManager.swift */; };
 		D5C624F62DEF2B0100C787E6 /* CollectionCellItems.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5C624F52DEF2B0100C787E6 /* CollectionCellItems.swift */; };
 		D5C624F92DF34E7A00C787E6 /* TemperatureGradientBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5C624F82DF34E7A00C787E6 /* TemperatureGradientBar.swift */; };
+		D5D2E3392E23D3ED00BE57F2 /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5D2E3382E23D3ED00BE57F2 /* File.swift */; };
+		D5D2E33B2E2ED9EA00BE57F2 /* TabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5D2E33A2E2ED9EA00BE57F2 /* TabBarViewController.swift */; };
 		FDA5830782E77E48F48F0387 /* Pods_WeatherApplication.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3AD74DB411949973572803FE /* Pods_WeatherApplication.framework */; };
 /* End PBXBuildFile section */
 
@@ -87,6 +89,8 @@
 		D5C624F12DEA119600C787E6 /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
 		D5C624F52DEF2B0100C787E6 /* CollectionCellItems.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionCellItems.swift; sourceTree = "<group>"; };
 		D5C624F82DF34E7A00C787E6 /* TemperatureGradientBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TemperatureGradientBar.swift; sourceTree = "<group>"; };
+		D5D2E3382E23D3ED00BE57F2 /* File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
+		D5D2E33A2E2ED9EA00BE57F2 /* TabBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarViewController.swift; sourceTree = "<group>"; };
 		DF1280EFAF0988DEE283AF01 /* Pods_WeatherApplicationTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WeatherApplicationTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		EE7F2AEC3AA771482AB59960 /* Pods_WeatherApplication_WeatherApplicationUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WeatherApplication_WeatherApplicationUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -198,6 +202,7 @@
 				D56EA3C02E0980A90062CB18 /* CompositionViewController.swift */,
 				D59596752DDCCFB60036E271 /* CompositionView.swift */,
 				D59596872DDD181E0036E271 /* HeaderSupplementaryView.swift */,
+				D5D2E3352E23CCFE00BE57F2 /* TapBar */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -275,6 +280,15 @@
 				D5ACDEB32DE50D2700139BFE /* ViewSetup */,
 			);
 			path = SetupLocation;
+			sourceTree = "<group>";
+		};
+		D5D2E3352E23CCFE00BE57F2 /* TapBar */ = {
+			isa = PBXGroup;
+			children = (
+				D5D2E33A2E2ED9EA00BE57F2 /* TabBarViewController.swift */,
+				D5D2E3382E23D3ED00BE57F2 /* File.swift */,
+			);
+			path = TapBar;
 			sourceTree = "<group>";
 		};
 		D5E253092E144CAB002E388F /* Flow */ = {
@@ -547,7 +561,9 @@
 				D59596692DDCCD810036E271 /* AppDelegate.swift in Sources */,
 				D56EA3C32E0C2CF30062CB18 /* CompositionModel.swift in Sources */,
 				D5C624F62DEF2B0100C787E6 /* CollectionCellItems.swift in Sources */,
+				D5D2E33B2E2ED9EA00BE57F2 /* TabBarViewController.swift in Sources */,
 				D5C624F22DEA119600C787E6 /* LocationManager.swift in Sources */,
+				D5D2E3392E23D3ED00BE57F2 /* File.swift in Sources */,
 				D5C624E92DE5FB2900C787E6 /* RoundedBackgroundView.swift in Sources */,
 				D5C624E62DE5217600C787E6 /* Service.swift in Sources */,
 				D595966A2DDCCD810036E271 /* SceneDelegate.swift in Sources */,

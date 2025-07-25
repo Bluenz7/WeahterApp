@@ -36,7 +36,7 @@ class AnimatedWeatherBackgroundView: UIView {
         gradientLayer.frame = bounds
     }
     
-    // MARK: - Gradient Background
+    // MARK: - Gradient Background.
     private func setupGradient() {
         gradientLayer.frame = bounds
         gradientLayer.colors = [

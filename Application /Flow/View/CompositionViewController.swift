@@ -13,7 +13,6 @@ class CompositionViewController: UIViewController {
     //MARK: - Private properties.
     private var compositionView = CompositionView()
     
-    
     //MARK: - Calling BackgorundView.
     private var weatherBackgroundView: AnimatedWeatherBackgroundView?
     
@@ -25,6 +24,8 @@ class CompositionViewController: UIViewController {
     //MARK: - Life Cycle.
     override func viewDidLoad() {
         view = compositionView
+//        compositionView.tabBar.delegate = self
+//        view = compositionView
         presenter.loadWeather()
     }
     
@@ -47,5 +48,12 @@ extension CompositionViewController: WeahterPresenterProtocol {
     }
     func setCollectionModel(param: CollectionModel) {
         compositionView.setCollectionModel(param: param)
+    }
+}
+
+extension CompositionViewController: UITabBarDelegate {
+    func tabBar(_ tabBar: UITabBar, didSelect item: UITabBarItem) {
+        
+        print("Выбран Tab: \(item.tag)")
     }
 }

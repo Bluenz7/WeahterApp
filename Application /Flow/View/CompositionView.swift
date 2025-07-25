@@ -45,10 +45,26 @@ class CompositionView: UIView, WeahterPresenterProtocol {
         return label
     }()
     
-    private let tabBar: UITabBar = {
-        let tab = UITabBar()
-        return tab
-    }()
+//    open lazy var tabBar: UITabBar = {
+//        let bar = UITabBar()
+//        bar.translatesAutoresizingMaskIntoConstraints = false
+//        
+//        let appearance = UITabBarAppearance()
+//        appearance.configureWithOpaqueBackground()
+//        appearance.backgroundColor = UIColor(red: 70/255, green: 100/255, blue: 180/255, alpha: 1.0)
+//        
+//        appearance.stackedLayoutAppearance.selected.iconColor = .white
+//        appearance.stackedLayoutAppearance.selected.titleTextAttributes = [.foregroundColor: UIColor.white]
+//        appearance.stackedLayoutAppearance.normal.iconColor = .white.withAlphaComponent(0.6)
+//        appearance.stackedLayoutAppearance.normal.titleTextAttributes = [.foregroundColor: UIColor.white.withAlphaComponent(0.6)]
+//        
+//        bar.standardAppearance = appearance
+//        
+//        if #available(iOS 15.0, *) {
+//            bar.scrollEdgeAppearance = appearance
+//        }
+//        return bar
+//    }()
     
     private lazy var collectionView: UICollectionView = {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: createLayout())
@@ -278,9 +294,9 @@ extension CompositionView {
         addSubview(countryLabel)
         addSubview(temperatureLabel)
         addSubview(conditionLabel)
-        
-        
     }
+    
+    
     //MARK: - Set Constraints.
     func setConstraints() {
         NSLayoutConstraint.activate([
@@ -296,9 +312,31 @@ extension CompositionView {
             collectionView.topAnchor.constraint(equalTo: topAnchor, constant: 350),
             collectionView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
             collectionView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20),
-            collectionView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: 0)
+            collectionView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: 0),
+
         ])
     }
 }
-
-
+//
+//extension CompositionView: UITabBarDelegate {
+//    
+//    func setupTabBar() {
+//        let item1 = UITabBarItem(title: "", image: UIImage(systemName: "house"), tag: 0)
+//        item1.imageInsets = UIEdgeInsets(top: 20, left: 0, bottom: -6, right: 0)
+//        item1.titlePositionAdjustment = UIOffset(horizontal: 0, vertical: -2)
+//        let item2 = UITabBarItem(title: "", image: UIImage(systemName: "cloud.sun"), tag: 1)
+//        item2.imageInsets = UIEdgeInsets(top: 6, left: 0, bottom: -6, right: 0)
+//        item2.titlePositionAdjustment = UIOffset(horizontal: 0, vertical: -2)
+//
+//        tabBar.items = [item1, item2]
+//        tabBar.selectedItem = tabBar.items?.first
+//        tabBar.delegate = self
+//        tabBar.backgroundColor = .white
+//        tabBar.tintColor = .white
+//        tabBar.layer.shadowColor = UIColor.black.cgColor
+//        tabBar.layer.shadowOpacity = 0.1
+//        tabBar.layer.shadowOffset = CGSize(width: 0, height: -2)
+//        tabBar.layer.shadowRadius = 8
+//    }
+//}
+//

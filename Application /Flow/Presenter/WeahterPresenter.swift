@@ -87,7 +87,6 @@ class WeatherPresenter {
         return collectionModel
     }
     
-    
     private func extractHour(from dateTimeString: String) -> String {
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd HH:mm"

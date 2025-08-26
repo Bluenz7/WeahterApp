@@ -11,7 +11,8 @@ import Kingfisher
 
 class SecondCollectionViewCell: UICollectionViewCell{
     
-    //MARK: - Model.
+    // MARK: - Model.
+    
     struct Model {
         var date: String?
         var icon: URL?
@@ -19,7 +20,8 @@ class SecondCollectionViewCell: UICollectionViewCell{
         var maxtemp_c: Double?
     }
     
-    //MARK: - Private Properties.
+    // MARK: - Private Properties.
+    
     private let timeLabel: UILabel = {
         let label = UILabel()
         label.text = ""
@@ -68,10 +70,12 @@ class SecondCollectionViewCell: UICollectionViewCell{
 //    }()
     
   
-    //MARK: - TemperatureGradintBar.
+    // MARK: - TemperatureGradintBar.
+    
     private let temperatureBar = TemperatureGradientBar()
     
-    //MARK: - Setup Cell.
+    // MARK: - Setup Cell.
+    
     private func setupCell() {
         addSubview(timeLabel)
         addSubview(imageURL)
@@ -83,7 +87,8 @@ class SecondCollectionViewCell: UICollectionViewCell{
         setConstraints()
     }
     
-    //MARK: - Life Cycle.
+    // MARK: - Life Cycle.
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupCell()
@@ -108,7 +113,8 @@ class SecondCollectionViewCell: UICollectionViewCell{
     }
 }
 
-//MARK: - Setup Configuration.
+// MARK: - Setup Configuration.
+
 extension SecondCollectionViewCell {
     func configuredCell(by model: Any) {
         guard let model = model as? Model else { return }
@@ -119,7 +125,8 @@ extension SecondCollectionViewCell {
     }
 }
 
-//MARK: - Setup Constraints.
+// MARK: - Setup Constraints.
+
 extension SecondCollectionViewCell {
     func setConstraints() {
         temperatureBar.translatesAutoresizingMaskIntoConstraints = false

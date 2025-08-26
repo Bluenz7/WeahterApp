@@ -11,9 +11,11 @@ import UIKit
 final class CustomTabBarView: UIView {
     
     // MARK: - Public callbacks.
+    
     var onItemSelected: ((Int) -> Void)?
     
   // MARK: - Private UI.
+    
     private let stackView = UIStackView()
     private let buttons: [UIButton] = [
         CustomTabBarView.makeTabButton(title: "", imageName: "cloud.sun"),
@@ -37,7 +39,9 @@ final class CustomTabBarView: UIView {
         }
         addSubview(stackView)
     }
+    
     // MARK: - Life Cycle.
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
     }

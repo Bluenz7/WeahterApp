@@ -10,7 +10,8 @@ import UIKit
 
 class TemperatureGradientBar: UIView {
     
-    //MARK: - Private Properties and Methods.
+    // MARK: - Private Properties and Methods.
+    
     private let gradientLayer = CAGradientLayer()
     private var indicatorCenterXConstraint: NSLayoutConstraint?
     

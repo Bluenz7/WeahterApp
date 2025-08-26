@@ -31,12 +31,14 @@ class AnimatedWeatherBackgroundView: UIView {
         addRain()
     }
     // MARK: - Life Cycle.
+    
     override func layoutSubviews() {
         super.layoutSubviews()
         gradientLayer.frame = bounds
     }
     
     // MARK: - Gradient Background.
+    
     private func setupGradient() {
         gradientLayer.frame = bounds
         gradientLayer.colors = [
@@ -66,7 +68,8 @@ class AnimatedWeatherBackgroundView: UIView {
 //        gradientLayer.add(animation, forKey: "colorChange")
     }
     
-    // MARK: - Stars
+    // MARK: - Stars.
+    
     private func addStars() {
         let emitter = CAEmitterLayer() 
         emitter.emitterPosition = CGPoint(x: bounds.width / 2.2, y: 150)
@@ -86,7 +89,8 @@ class AnimatedWeatherBackgroundView: UIView {
         layer.addSublayer(emitter)
     }
     
-    // MARK: - Clouds
+    // MARK: - Clouds.
+    
     private func addClouds() {
         for i in 0..<25 {
             let cloudImage = UIImage(named: "realisticCloud")
@@ -119,7 +123,8 @@ class AnimatedWeatherBackgroundView: UIView {
         }
     }
 
-    // MARK: - Rain
+    // MARK: - Rain.
+    
     private func addRain() {
         let emitter = CAEmitterLayer()
         emitter.emitterPosition = CGPoint(x: bounds.width / 2, y: -10)
@@ -142,6 +147,7 @@ class AnimatedWeatherBackgroundView: UIView {
 }
 
 // MARK: - Setup Rain demonstration.
+
 private func makeRaindropImage(color: UIColor) -> UIImage {
     let size = CGSize(width: 2, height: 10)
     let renderer = UIGraphicsImageRenderer(size: size)
@@ -155,6 +161,7 @@ private func makeRaindropImage(color: UIColor) -> UIImage {
 }
 
 // MARK: - Setup Stars demonstration.
+
 private func starImage(color: UIColor) -> UIImage {
     let size = CGSize(width: 6, height: 6)
     UIGraphicsBeginImageContextWithOptions(size, false, 0)

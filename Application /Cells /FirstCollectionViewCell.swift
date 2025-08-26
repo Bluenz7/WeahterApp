@@ -11,14 +11,16 @@ import UIKit
 
 class FirstCollectionViewCell: UICollectionViewCell {
     
-    //MARK: - Model.
+    // MARK: - Model.
+    
     struct Model {
         var hour: String?
         var iconURL: URL?
         var temp: Double?
     }
     
-    //MARK: - Private Properties.
+    // MARK: - Private Properties.
+    
     private let hourLabel: UILabel = {
         let label = UILabel()
         label.text = NSLocalizedString("", comment: "Просто как пример поставлена данная система")
@@ -45,7 +47,8 @@ class FirstCollectionViewCell: UICollectionViewCell {
         return label
     }()
     
-    //MARK: - Setup Cell.
+    // MARK: - Setup Cell.
+    
     private func setupCell() {
         addSubview(hourLabel)
         addSubview(iconURL)
@@ -54,7 +57,8 @@ class FirstCollectionViewCell: UICollectionViewCell {
         backgroundColor = UIColor(red: 35/255, green: 51/255, blue: 98/255, alpha: 15)
     }
     
-    //MARK: - Life Cycle.
+    // MARK: - Life Cycle.
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupCell()
@@ -65,7 +69,8 @@ class FirstCollectionViewCell: UICollectionViewCell {
     }
 }
 
-//MARK: - Setup Configuration.
+// MARK: - Setup Configuration.
+
 extension FirstCollectionViewCell {
     func configuredCell(by model: Any) {
         guard let model = model as? Model else { return }
@@ -74,7 +79,8 @@ extension FirstCollectionViewCell {
         tempLabel.text = "\((model.temp ?? 0))º"
     }
 }
-//MARK: - Setup Constraints.
+// MARK: - Setup Constraints.
+
 extension FirstCollectionViewCell {
     func setConstraints() {
         NSLayoutConstraint.activate([

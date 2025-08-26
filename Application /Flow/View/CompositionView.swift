@@ -10,7 +10,8 @@ import SnapKit
 
 class CompositionView: UIView, WeahterPresenterProtocol {
     
-    //MARK: - Private properties and methods.
+    // MARK: - Private properties and methods.
+    
     private let countryLabel: UILabel = {
         let label = UILabel()
         label.text = ""
@@ -86,16 +87,19 @@ class CompositionView: UIView, WeahterPresenterProtocol {
     }()
     
     // MARK: - Model.
+    
     private var collectionModel: CollectionModel = CollectionModel(sections: [])
 
 
-    //MARK: - Setup Delegates.
+    // MARK: - Setup Delegates.
+    
     private func setDelegates() {
         collectionView.delegate = self
         collectionView.dataSource = self
     }
     
-    //MARK: - Life Cycle.
+    // MARK: - Life Cycle.
+    
     init() {
         super.init(frame: .zero)
         setDelegates()
@@ -119,7 +123,9 @@ class CompositionView: UIView, WeahterPresenterProtocol {
 
 
 extension CompositionView {
-    //MARK: - Setup Model.
+    
+    // MARK: - Setup Model.
+    
     func updateTemperature(param: CompositionModel) {
         countryLabel.text = param.country
         temperatureLabel.text = "\(param.temperature ?? 0)"
@@ -133,7 +139,8 @@ extension CompositionView {
     }
 }
 
-//MARK: - Create Compositionlayout.
+// MARK: - Create Compositionlayout.
+
 extension CompositionView {
     private func createLayout() -> UICollectionViewCompositionalLayout {
         UICollectionViewCompositionalLayout { [weak self] sectionIndex, _ in
@@ -151,7 +158,8 @@ extension CompositionView {
 }
 
 
-//MARK: - Extension setup Layout Section.
+// MARK: - Extension setup Layout Section.
+
 extension CompositionView {
     
     private func createLayoutSection(
@@ -199,7 +207,8 @@ extension CompositionView {
     }
 }
 
-//MARK: - Setup Collection Cells.
+// MARK: - Setup Collection Cells.
+
 extension CompositionView: UICollectionViewDataSource, UICollectionViewDelegate  {
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
@@ -276,7 +285,7 @@ extension CompositionView: UICollectionViewDataSource, UICollectionViewDelegate 
     }
 }
 
-//MARK: - Setup Constraints.
+// MARK: - Setup Constraints.
 extension CompositionView {
     func setup() {
         setupView()
@@ -297,7 +306,7 @@ extension CompositionView {
     }
     
     
-    //MARK: - Set Constraints.
+// MARK: - Set Constraints.
     func setConstraints() {
         NSLayoutConstraint.activate([
             countryLabel.topAnchor.constraint(equalTo: topAnchor, constant: 100),

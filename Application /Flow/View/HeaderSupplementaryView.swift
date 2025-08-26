@@ -10,7 +10,8 @@ import UIKit
 
 class HeaderSupplementaryView: UICollectionReusableView {
     
-    //MARK: - Private Properties.
+    // MARK: - Private Properties.
+    
     private let headerLabel: UILabel = {
         let label = UILabel()
         label.text = ""
@@ -28,7 +29,9 @@ class HeaderSupplementaryView: UICollectionReusableView {
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
-    //MARK: - Life Cycle.
+    
+    // MARK: - Life Cycle.
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         setup()
@@ -40,13 +43,15 @@ class HeaderSupplementaryView: UICollectionReusableView {
     
 }
 // MARK: - Extension Configuration.
+
 extension HeaderSupplementaryView {
     func configureHeader(categoryName: String) {
         headerLabel.text = categoryName
     }
 }
 
-//MARK: - Extension Setup of View
+// MARK: - Extension Setup of View
+
 extension HeaderSupplementaryView {
     func setup() {
         setupView()
@@ -57,7 +62,8 @@ extension HeaderSupplementaryView {
         addSubview(headerLabel)
         addSubview(separatorView)
     }
-    //MARK: - Set Constraints.
+// MARK: - Set Constraints.
+    
     func setConstraints() {
         NSLayoutConstraint.activate([
             headerLabel.centerYAnchor.constraint(equalTo: centerYAnchor),

@@ -18,11 +18,13 @@ class WeatherPresenter {
     let service = WeatherService()
     
     // MARK: - Inizialized WeatherVC
+    
     init(view: CompositionViewController, weatherPresenter: WeahterPresenterProtocol) {
         self.view = view
         self.weatherPresenter = weatherPresenter
     }
     //MARK: - Setup CompositionModel.
+    
     func buildCompositionModel(by data: WeatherResponse) -> CompositionModel {
         
         let compositionModel: CompositionModel = CompositionModel(
@@ -32,7 +34,8 @@ class WeatherPresenter {
         
         return compositionModel
     }
-    //MARK: - Setupr CollectionModel.
+    // MARK: - Setupr CollectionModel.
+    
     private func buildModel(by data: WeatherResponse) -> CollectionModel {
         
         var collectionModel: CollectionModel = CollectionModel(sections: [])
